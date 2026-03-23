@@ -3,16 +3,16 @@
 namespace src\controllers;
 
 use views\View;
+use src\services\Db;
 
-class MainController
-{
-    public $view;
-    public $layout ='default';
-    public function __construct() {
-        $this->view = new View($this->layout);
-    }
+class MainController extends Controller {
+    
     public function main() {
-     $this->view->renderHTML('main/main.php');
+        $db = new Db();
+        $articles = $db->query('SELECT * FROM `articles`;');
+        // var_dump($articles);
+
+        $this->view->renderHTML('main/main.php', ['articles' => $articles]);
     }
 
     public function sayHello($name)
