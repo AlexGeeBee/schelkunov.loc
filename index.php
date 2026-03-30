@@ -1,38 +1,47 @@
 <?php
 
-// use Src\Controllers\MainController;  
-spl_autoload_register(function (string $className) {
-    // var_dump(__DIR__ . '/' . $className);
-    require_once __DIR__ . '/' . str_replace('\\', '/', $className . '.php');
-});
+try {
+    spl_autoload_register(function (string $className) {
+        // var_dump(__DIR__ . '/' . $className);
+        require_once __DIR__ . '/' . str_replace('\\', '/', $className . '.php');
+    });
 
 
-$route = $_GET['route'] ?? '';
-$routes = require_once __DIR__ . '/src/config/routes.php';
-// var_dump($routes);
+    $route = $_GET['route'] ?? '';
+    $routes = require_once __DIR__ . '/src/config/routes.php';
+    // var_dump($routes);
 
-$isRouteFound = false;
+    $isRouteFound = false;
 
-foreach ($routes as $pattern => $controllerAndAction) {
-    preg_match($pattern, $route, $matches);
-    if (!empty($matches)) {
-        $isRouteFound = true;
-        break;
+    foreach ($routes as $pattern => $controllerAndAction) {
+        preg_match($pattern, $route, $matches);
+        if (!empty($matches)) {
+            $isRouteFound = true;
+            break;
+        }
     }
+
+    $controller = new \src\controllers\MainController();
+
+    if(!$isRouteFound) {
+        throw new \src\exceptions\NotFoundException();
+    }
+
+    $controllerName = $controllerAndAction[0];
+    $actionName = $controllerAndAction[1];
+    unset($matches[0]);
+
+
+
+    $controller = new $controllerName;
+    $controller->$actionName(...$matches);
 }
 
-if(!$isRouteFound) {
-    echo 'Страница не найдена';
-    return;
+catch (\src\exceptions\DbException $e) {
+    $controller->view->renderHtml('errors/500.php', ['error' => $e->getMessage()], 500);
 }
-
-$controllerName = $controllerAndAction[0];
-$actionName = $controllerAndAction[1];
-unset($matches[0]);
-
-
-
-$contoller = new $controllerName;
-$contoller->$actionName(...$matches);
+catch (\src\exceptions\NotFoundException $e) {
+    $controller->view->renderHtml('errors/404.php', ['error' => $e->getMessage()], 404);
+}
 
 ?>

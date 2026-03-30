@@ -2,7 +2,7 @@
 
 namespace src\models;
 
-use src\services\Db;
+use src\exceptions\InvalidArgumentException;
 
 class User extends ActiveRecordEntity {
 
@@ -44,6 +44,47 @@ class User extends ActiveRecordEntity {
 
     public function getCreatedAt():string {
         return $this->created_at;
+    }
+
+    public static function signUp(array $userData) {
+        
+        if (empty($userData['login'])) {
+            throw new InvalidArgumentException('Не передан логин');
+        }
+        if (empty($userData['email'])) {
+            throw new InvalidArgumentException('Не передан адрес эл. почты');
+        }
+        if (empty($userData['password'])) {
+            throw new InvalidArgumentException('Не передан пароль');
+        }
+        if (!preg_match('/^[a-zA-Z0-9]+$/', $userData['login'])) {
+            throw new InvalidArgumentException('Логин должен содержать только символы латинского алфавита и цифры');
+        }
+        if (!filter_var($userData['email'], FILTER_VALIDATE_EMAIL)) {
+            throw new InvalidArgumentException('Некорректный адрес эл. почты');
+        }
+        if (mb_strlen($userData['password']) < 8) {
+            throw new InvalidArgumentException('Пароль должен состоять из не менее 8 символов');
+        }
+        if (static::findOneByColumn('nickname', $userData['login']) !== null) {
+            throw new InvalidArgumentException('Пользователь с таким логином уже существует');
+        }
+        if (static::findOneByColumn('email', $userData['email']) !== null) {
+            throw new InvalidArgumentException('Пользователь с таким email уже существует');
+        }
+
+
+        $user = new User();
+        $user->nickname = $userData['login'];
+        $user->email = $userData['email'];
+        $user->password_hash = password_hash($userData['password'], PASSWORD_DEFAULT);
+        $user->is_confirmed = true;
+        $user->role = 'user';
+        $user->auth_token = sha1(random_bytes(100)) . sha1(random_bytes(100));
+
+        $user->save();
+
+        return $user;
     }
 
 }

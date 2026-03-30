@@ -111,6 +111,18 @@ section#blog {
     color: white;
 }
 
+
+/* REGISTER */
+.auth {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+}
+
+.auth input {
+}
+
+
 footer {
     background-color: #3d3d3d;
     color: white;

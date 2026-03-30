@@ -4,6 +4,7 @@ namespace src\controllers;
 
 use src\models\Article;
 use src\models\User;
+use src\exceptions\NotFoundException;
 
 class ArticlesController extends Controller {
     public function index() {
@@ -19,8 +20,7 @@ class ArticlesController extends Controller {
             $this->view->renderHTML('articles/view.php', ['article' => $article]);
         }
         else {
-            $this->view->renderHTML('errors/404.php', [], 404);
-            return;
+            throw new NotFoundException();
         }
         
     }
@@ -28,8 +28,7 @@ class ArticlesController extends Controller {
     public function edit($id) {
         $article = Article::getById($id);
         if ($article === null) {
-            $this->view->renderHTML('errors/404.php', [], 404);
-            return;
+            throw new NotFoundException();
         }
 
         if (!empty($_POST)) {
@@ -51,8 +50,7 @@ class ArticlesController extends Controller {
         $article = Article::getById($id);
 
         if ($article === null) {
-            $this->view->renderHTML('errors/404.php', [], 404);
-            return;
+            throw new NotFoundException();
         }
         $article->delete();
     }
