@@ -52,4 +52,9 @@ class UsersController extends Controller {
         header("Location: {$_SERVER['HTTP_REFERER']}");
         exit();
     }
+
+    public function allUsers() {
+        $users = User::findAll();
+        $this->view->renderHTML('user/allUsers.php', ['users' => $users]);
+    }
 }

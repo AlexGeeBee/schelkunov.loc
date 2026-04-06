@@ -12,15 +12,18 @@ body {
 body {
     flex: 1;
 }
+
 p {
     margin: 0;
 }
+
 a {
     text-decoration: none;
     color: rgb(23, 52, 214);
 }
+
 header {
-    background-color: #40ff00;
+    background-color: #4bda1c;
     color: white;
     padding: 15px 25px;
     display: flex;
@@ -29,22 +32,28 @@ header {
     flex-wrap: wrap;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 header h1 {
     margin: 0;
     font-size: 24px;
 }
+
 header a {
     color: white;
 }
+
 .header_left {
     display: flex;
     align-items: center;
     column-gap: 20px;
 }
+
 header p {
     font-size: 18px;
+    font-weight: 600;
     margin-top: 5px;
 }
+
 nav {
     display: flex;
     align-items: center;
@@ -71,19 +80,42 @@ main {
 
 
 
+/* ARTICLES */
+
+.all_posts {}
+
+.post {
+    border: 3px solid #40ff00;
+    margin-top: 30px;
+    padding: 5px 10px 20px;
+}
+
 .post_author {
     margin-bottom: 15px;
 }
+
 .post_link {
     color: #000;
-}
-.delete {
-    color: #e73f3f;
-}
-.edit {
-    color: #f7b322;
+    transition: 0.2s;
 }
 
+.post_link:hover {
+    color: #40ff00;
+}
+
+.delete {
+    color: #e92e2e;
+}
+
+.edit {
+    color: #f1ac15;
+}
+
+.post_actions {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
 
 
 /* EDIT */
@@ -123,6 +155,21 @@ main {
     row-gap: 15px;
 }
 
+
+
+/* ALL USERS */
+
+
+.user_card {
+    margin-top: 30px;
+    border: 3px solid #40ff00;
+    padding: 10px 15px;
+    transition: 0.3s;
+}
+
+.user_card:hover {
+    transform: scale(1.1);
+}
 
 
 footer {

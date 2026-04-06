@@ -5,6 +5,7 @@ namespace src\controllers;
 use src\models\Article;
 use src\models\User;
 use src\exceptions\NotFoundException;
+use src\exceptions\InvalidArgumentException;
 
 class ArticlesController extends Controller {
 
@@ -41,13 +42,21 @@ class ArticlesController extends Controller {
     public function add() {
 
         if ($this->user === null) {
-            throw UnauthorizedException();
+            throw new UnauthorizedException();
         }
-        $article = new Article();
-        $article->setName('Новая статья');
-        $article->setText('Текст новой статьи');
-        $article->setAuthorId(2);
-        $article->save();
+        
+        if (!empty($_POST)) {
+
+            try {
+                $article = Article::create($_POST, $_FILES['img'], $this->user);
+            }
+            catch (InvalidArgumentException $e) {
+                $this->view->renderHtml('articles/add.php', ['error' => $e->getMessage()]);
+                return;
+            }
+        }
+
+        $this->view->renderHtml('articles/add.php');
     }
 
     public function delete($id) {

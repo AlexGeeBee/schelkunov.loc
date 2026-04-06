@@ -3,6 +3,7 @@
 namespace src\models;
 
 use src\services\Db;
+use src\exceptions\InvalidArgumentException;
 
 class Article extends ActiveRecordEntity {
 
@@ -10,6 +11,7 @@ class Article extends ActiveRecordEntity {
     protected $name;
     protected $text;
     protected $created_at;
+    protected $img;
 
 
     protected static function getTableName(): string {
@@ -47,6 +49,10 @@ class Article extends ActiveRecordEntity {
         return User::getById($this->author_id);
     }
 
+    public function getImg() {
+        return $this->img;
+    }
+
     public function updateFromArray(array $fields) { // : Article
         // $this->setName($fields['name']);
         // $this->setText($fields['text']);
@@ -56,6 +62,36 @@ class Article extends ActiveRecordEntity {
         $this->save();
     }
     
+    public static function create(array $fields, array $imgFile, User $author): Article {
+        if (empty($fields['name'])) {
+            throw new \InvalidArgumentException('Не передано название статьи');
+        }
+        if (empty($fields['text'])) {
+            throw new \InvalidArgumentException('Не передан текст статьи');
+        }
+        if ($imgFile['size'] > 1024*1024*1024*10) {
+            throw new \InvalidArgumentException('Файл должен быть не более 10 Мб');
+        }
+
+        $article = new Article();
+        $article->name = $fields['name'];
+        $article->text = $fields['text'];
+        $article->author_id = $author->getId();
+
+        if (!empty($imgFile['name'])) {
+
+            $filePath = 'uploads/' . $imgFile['name'];
+            $article->img = $filePath;
+
+            if (!move_uploaded_file($imgFile['tmp_name'], $filePath)) {
+                throw new InvalidArgumentException('Ошибка при загрузке файла');
+            }
+        }
+
+        $article->save();
+        return $article;
+    }
+
     // public static function findAll():array {
     //     $db = new Db();
     //     return $db->query('SELECT * FROM `articles`;', [], static::class);

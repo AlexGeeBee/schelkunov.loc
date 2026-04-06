@@ -10,6 +10,6 @@ return [
     '~^user/signUp$~' => [src\controllers\UsersController::class, 'signUp'],
     '~^user/logIn$~' => [src\controllers\UsersController::class, 'logIn'],
     '~^user/logOut$~' => [src\controllers\UsersController::class, 'logOut'],
-    '~^users$~' => [src\controllers\UsersController::class, ''],
+    '~^users$~' => [src\controllers\UsersController::class, 'allUsers'],
     '~^$~' => [src\controllers\MainController::class, 'main'],
 ];

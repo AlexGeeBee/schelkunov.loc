@@ -4,18 +4,25 @@
     <p><a href="/schelkunov.loc/articles/add">Добавить статью</a></p>
 <?php endif ?>
 
-<?php foreach($articles as $article): ?>
+<div class="all_posts">
 
-    <h2><?= $article->getName() ?></h2>
-    <p><?= $article->getText() ?></p>
-    <p class="post_author">Автор: <?= $article->getAuthor()->getNickname() ?></p>
-    <a class="post_link" href="article/<?= $article->getId() ?>">Подробнее</a><br>
+    <?php foreach($articles as $article): ?>
 
-    <?php if ($user): ?>
-        <a class="post_link delete" href="article/<?= $article->getId() ?>/delete">Удалить</a><br>
-        <a class="post_link edit" href="article/<?= $article->getId() ?>/edit">Редактировать</a>
-    <?php endif ?>
+        <div class="post">
+            <h2><?= $article->getName() ?></h2>
+            <p><?= $article->getText() ?></p>
+            <p class="post_author">Автор: <?= $article->getAuthor()->getNickname() ?></p>
+            
+            <div class="post_actions">
+                <a class="post_link" href="article/<?= $article->getId() ?>">Подробнее</a>
 
-    <hr>
+                <?php if ($user): ?>
+                    <a class="post_link delete" href="article/<?= $article->getId() ?>/delete">Удалить</a>
+                    <a class="post_link edit" href="article/<?= $article->getId() ?>/edit">Редактировать</a>
+                <?php endif ?>
+            </div>
+        </div>
 
-<?php endforeach; ?>
+    <?php endforeach; ?>
+
+</div>
