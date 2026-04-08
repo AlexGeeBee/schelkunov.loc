@@ -1,11 +1,34 @@
 <h1>Редактирование статьи: <?= $article->getName() ?></h1>
 
-
 <p>Автор: <?= $article->getAuthor()->getNickname() ?></p>
 
 
-<form action="" method="POST">
-    <label>Название статьи: <br> <input class="edit_input" type="text" name="name" value="<?= $article->getName() ?>"></label><br>
-    <label>Текст статьи: <br> <textarea class="edit_input edit_textarea" name="text" rows="10" cols="8"><?= $article->getText() ?></textarea></label><br>
-    <input class="button" type="submit" value="Обновить">
-</form>
+<?php if (!empty($error)) : ?>
+    <p style="background-color: red;"><?= $error ?></p>
+<?php endif ?>
+
+
+<div class="m-3 col-md-6">
+
+    <form class="auth" action="" method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="inputName" class="form-label">Название</label>
+            <input class="form-control" type="text" id="inputName" name="name" value="<?= $_POST['name'] ?? $article->getName() ?>">
+        </div> 
+
+        <div class="mb-3">
+            <label for="inputText" class="form-label">Текст</label>
+            <textarea class="form-control" id="inputText" name="text"><?= $_POST['text'] ?? $article->getText() ?></textarea>
+        </div> 
+
+        <div class="mb-3">
+            <label for="inputImg" class="form-label">Обложка</label>
+            <input class="form-control" type="file" id="inputImg" name="img">
+        </div> 
+
+        <input type="submit" class="button btn btn-primary" value="Отправить">
+        <a href="article/<?= $article->getId() ?>" class="button btn btn-primary"><= Отменить</a>
+
+    </form>
+
+</div>

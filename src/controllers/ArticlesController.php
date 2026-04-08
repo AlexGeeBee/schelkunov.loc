@@ -27,16 +27,32 @@ class ArticlesController extends Controller {
     }
 
     public function edit($id) {
+
         $article = Article::getById($id);
+
         if ($article === null) {
             throw new NotFoundException();
         }
 
+        if ($this->user === null) {
+            throw new UnauthorizedException();
+        }
+        
         if (!empty($_POST)) {
-            $article->updateFromArray($_POST);
+
+            try {
+                $article->updateFromArray($_POST, $_FILES['img'], $this->user);
+
+                header("Location: /schelkunov.loc/article/{$article->getId()}");
+                exit;
+            }
+            catch (InvalidArgumentException $e) {
+                $this->view->renderHtml('articles/edit.php', ['error' => $e->getMessage()]);
+                return;
+            }
         }
 
-        $this->view->renderHTML('articles/edit.php', ['article' => $article]);
+        $this->view->renderHtml('articles/edit.php', ['article' => $article]);
     }
 
     public function add() {
@@ -49,6 +65,9 @@ class ArticlesController extends Controller {
 
             try {
                 $article = Article::create($_POST, $_FILES['img'], $this->user);
+
+                header("Location: /schelkunov.loc/article/{$article->getId()}");
+                exit;
             }
             catch (InvalidArgumentException $e) {
                 $this->view->renderHtml('articles/add.php', ['error' => $e->getMessage()]);
@@ -65,6 +84,23 @@ class ArticlesController extends Controller {
         if ($article === null) {
             throw new NotFoundException();
         }
+        if ($this->user === null) {
+            throw new UnauthorizedException();
+        }
         $article->delete();
+
+        header("Location: /schelkunov.loc/articles");
+        exit;
+    }
+
+    public function search() {
+        if (empty($_GET['q'])) {
+            $this->view->renderHtml('articles/search');
+            return;
+        }
+        else {
+            $articles = Article::search($_GET['q']);
+            $this->view->renderHtml('articles/search', ['articles' => $articles]);
+        }
     }
 }

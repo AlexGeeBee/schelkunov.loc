@@ -53,15 +53,37 @@ class Article extends ActiveRecordEntity {
         return $this->img;
     }
 
-    public function updateFromArray(array $fields) { // : Article
-        // $this->setName($fields['name']);
-        // $this->setText($fields['text']);
+    public function updateFromArray(array $fields, array $imgFile): Article {
+        
+        if (empty($fields['name'])) {
+            throw new \InvalidArgumentException('Не передано название статьи');
+        }
+        if (empty($fields['text'])) {
+            throw new \InvalidArgumentException('Не передан текст статьи');
+        }
+        if ($imgFile['size'] > 1024*1024*1024*10) {
+            throw new \InvalidArgumentException('Файл должен быть не более 10 Мб');
+        }
+
         $this->name = $fields['name'];
         $this->text = $fields['text'];
 
+        if (!empty($imgFile['name'])) {
+
+            $filePath = 'uploads/' . $imgFile['name'];
+            $this->img = $filePath;
+
+            if (!move_uploaded_file($imgFile['tmp_name'], $filePath)) {
+                throw new InvalidArgumentException('Ошибка при загрузке файла');
+            }
+        }
+
         $this->save();
+        return $this;
+
     }
     
+
     public static function create(array $fields, array $imgFile, User $author): Article {
         if (empty($fields['name'])) {
             throw new \InvalidArgumentException('Не передано название статьи');

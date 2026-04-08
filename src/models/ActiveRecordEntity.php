@@ -99,6 +99,12 @@ abstract class ActiveRecordEntity {
         $this->id = null;
     }
 
+    public static function search(string $column, string $searchString): ?array {
+        $db = Db::getInstance();
+        $searchString = "%$searchString%";
+        return $db->query("SELECT * FROM `{static::getTableName()}` WHERE $column LIKE $searchString", [], static::class);
+    }
+
     abstract protected static function getTableName(): string;
 }
 

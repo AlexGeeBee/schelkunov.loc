@@ -9,12 +9,23 @@
     <?php foreach($articles as $article): ?>
 
         <div class="post">
-            <h2><?= $article->getName() ?></h2>
-            <p><?= $article->getText() ?></p>
-            <p class="post_author">Автор: <?= $article->getAuthor()->getNickname() ?></p>
+            <div>
+                <h2><?= $article->getName() ?></h2>
+
+                <?php if($article->getImg() !== null) : ?>
+                    <img class="post_img" src="<?= $article->getImg() ?>" width="200px" alt="">
+                <?php endif; ?>
+
+                <p><?= $article->getText() ?></p>
+            </div>
+
+
+            <div>
+                <p class="post_author">Автор: <?= $article->getAuthor()->getNickname() ?></p>
             
-            <div class="post_actions">
-                <a class="post_link" href="article/<?= $article->getId() ?>">Подробнее</a>
+                <div class="post_actions">
+                    <a class="post_link" href="article/<?= $article->getId() ?>">Подробнее</a>
+                </div>
             </div>
         </div>
 

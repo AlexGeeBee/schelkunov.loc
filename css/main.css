@@ -82,12 +82,26 @@ main {
 
 /* ARTICLES */
 
-.all_posts {}
+.all_posts {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 30px;
+    max-width: 1000px;
+}
 
 .post {
     border: 3px solid #40ff00;
     margin-top: 30px;
     padding: 5px 10px 20px;
+    width: 200px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.post_img {
+    margin-bottom: 10px;
 }
 
 .post_author {
@@ -140,6 +154,8 @@ main {
     border: 3px solid #40ff00;
     transition: 0.3s;
     cursor: pointer;
+    color: black;
+    text-align: center;
 }
 
 .button:hover {
