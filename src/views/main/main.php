@@ -1,5 +1,6 @@
 <h1>Статьи</h1>
 
+
 <div class="all_posts">
 
     <?php foreach($articles as $article): ?>
@@ -20,7 +21,7 @@
                 <p class="post_author">Автор: <?= $article->getAuthor()->getNickname() ?></p>
             
                 <div class="post_actions">
-                    <a class="post_link" href="/article/<?= $article->getId() ?>">Подробнее</a>
+                    <a class="post_link" href="article/<?= $article->getId() ?>">Подробнее</a>
                 </div>
             </div>
         </div>
