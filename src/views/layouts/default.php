@@ -13,7 +13,7 @@
 <header>
     <div class="header_left">
         <h1><a href="/">Мой Блог</a></h1>
-        <p><?= $user ? 'Пользователь: ' . $user->getNickname() : '' ?></p>
+        <p><?= $user ? 'Пользователь: ' . htmlspecialchars($user->getNickname()) : '' ?></p>
     </div>
     <nav>
         <a href="">Главная</a>

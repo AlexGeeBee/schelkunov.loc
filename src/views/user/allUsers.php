@@ -5,11 +5,11 @@
 <?php foreach($users as $user): ?>
 
 <div class="user_card">
-    <p>ID: <?= $user->getId() ?></p>
-    <p>Логин: <?= $user->getNickname() ?></p>
-    <p>Email: <?= $user->getEmail() ?></p>
-    <p>Роль: <?= $user->getRole() ?></p>
-    <p>Дата регистрации: <?= $user->getCreatedAt() ?></p>
+    <p>ID: <?= htmlspecialchars($user->getId()) ?></p>
+    <p>Логин: <?= htmlspecialchars($user->getNickname()) ?></p>
+    <p>Email: <?= htmlspecialchars($user->getEmail()) ?></p>
+    <p>Роль: <?= htmlspecialchars($user->getRole()) ?></p>
+    <p>Дата регистрации: <?= htmlspecialchars($user->getCreatedAt()) ?></p>
 </div>
 
 <?php endforeach; ?>

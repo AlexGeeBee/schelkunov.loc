@@ -1,6 +1,6 @@
-<h1>Редактирование статьи: <?= $article->getName() ?></h1>
+<h1>Редактирование статьи: <?= htmlspecialchars($article->getName()) ?></h1>
 
-<p class="author_label">Автор: <?= $article->getAuthor()->getNickname() ?></p>
+<p class="author_label">Автор: <?= htmlspecialchars($article->getAuthor()->getNickname()) ?></p>
 
 
 <?php if (!empty($error)) : ?>
@@ -27,7 +27,7 @@
         </div> 
 
         <input type="submit" class="button btn btn-primary" value="Отправить">
-        <a href="/article/<?= $article->getId() ?>" class="button btn btn-primary"><= Отменить</a>
+        <a href="/article/<?= htmlspecialchars($article->getId()) ?>" class="button btn btn-primary"><= Отменить</a>
 
     </form>
 

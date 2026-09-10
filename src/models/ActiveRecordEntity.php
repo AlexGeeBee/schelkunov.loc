@@ -101,9 +101,9 @@ abstract class ActiveRecordEntity {
 
     public static function search(string $column, string $searchString): ?array {
         $db = Db::getInstance();
-        $searchString = "'%$searchString%'";
+        $searchString = "%{$searchString}%";
         $table = static::getTableName();
-        return $db->query("SELECT * FROM `$table` WHERE $column LIKE $searchString", [], static::class);
+        return $db->query("SELECT * FROM `$table` WHERE $column LIKE :search_string", ['search_string' => $searchString], static::class);
     }
 
     abstract protected static function getTableName(): string;
