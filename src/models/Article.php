@@ -53,7 +53,7 @@ class Article extends ActiveRecordEntity {
         return $this->img;
     }
 
-    public function updateFromArray(array $fields, array $imgFile): Article {
+    public function updateFromArray(array $fields, ?array $imgFile = null): Article {
         
         if (empty($fields['name'])) {
             throw new \InvalidArgumentException('Не передано название статьи');
@@ -84,14 +84,14 @@ class Article extends ActiveRecordEntity {
     }
     
 
-    public static function create(array $fields, array $imgFile, User $author): Article {
+    public static function create(array $fields, User $author, ?array $imgFile = null): Article {
         if (empty($fields['name'])) {
             throw new \InvalidArgumentException('Не передано название статьи');
         }
         if (empty($fields['text'])) {
             throw new \InvalidArgumentException('Не передан текст статьи');
         }
-        if ($imgFile['size'] > 1024*1024*1024*10) {
+        if (!is_null($imgFile) && $imgFile['size'] > 1024*1024*1024*10) {
             throw new \InvalidArgumentException('Файл должен быть не более 10 Мб');
         }
 

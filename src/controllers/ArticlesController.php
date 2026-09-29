@@ -64,7 +64,7 @@ class ArticlesController extends Controller {
         if (!empty($_POST)) {
 
             try {
-                $article = Article::create($_POST, $_FILES['img'], $this->user);
+                $article = Article::create($_POST, $this->user, $_FILES['img']);
 
                 header("Location: /article/{$article->getId()}");
                 exit;
